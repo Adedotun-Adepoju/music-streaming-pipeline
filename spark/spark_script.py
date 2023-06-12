@@ -10,9 +10,11 @@ from pyspark.sql.functions import from_json, col
 
 # spark = SparkSession.builder.getOrCreate()
 
-spark = (
-    SparkSession.builder.appName("Kafka Pyspark Streaming").master("spark://localhost:7077").getOrCreate()
-)
+# spark = (
+#     SparkSession.builder.appName("Kafka Pyspark Streaming").master("spark://localhost:7077").getOrCreate()
+# )
+
+spark = SparkSession.builder.appName("read_test_straeam").getOrCreate()
 
 spark.sparkContext.setLogLevel("ERROR")
 
@@ -72,9 +74,9 @@ deserialized_df = df.selectExpr("CAST(value AS STRING)") \
 
 query = deserialized_df.writeStream \
     .format("console") \
-    .start()
-
-query.awaitTermination()
+    .outputMode("append") \
+    .start() \
+    .awaitTermination()
 
 
 

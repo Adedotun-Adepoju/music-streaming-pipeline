@@ -14,7 +14,7 @@ docker run -itd \
     eventsim \
         -c "examples/example-config.json" \
         --start-time "2015-06-01T00:00:00" \
-        --end-time "2015-12-01T00:00:00" \
+        --end-time "2016-02-01T00:00:00" \
         --nusers 5000 \
         --growth-rate 0.25 \
         --userid 1 \
