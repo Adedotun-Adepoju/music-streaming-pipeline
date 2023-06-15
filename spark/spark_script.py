@@ -31,11 +31,6 @@ df = (
 
 df.printSchema()
 
-# Convert binary value to string. The value is the data we are actually interested in
-# base_df = df.selectExpr("CAST(value AS STRING)")
-
-# Convert JSON String to Data Frame columns using custom schema 
-
 listen_event_schema = (
     StructType()
     .add("artist", StringType())
@@ -61,14 +56,9 @@ listen_event_schema = (
 
 # listen_dataframe = base_df.select(from_json(col("value"), listen_event_schema).alias("data")).select("data.*")
 
+# Convert binary value to string. The value is the data we are actually interested in
 
-# query = listen_dataframe.writeStream \
-#     .format("console") \
-#     .start()
-
-# query.awaitTermination()
-
-deserialized_df = df.selectExpr("CAST(value AS STRING)") \
+deserialized_df = df.selectExpr("CAST(value AS STRING)") \           
 .select(from_json(col("value"), listen_event_schema).alias("data")) \
 .select("data.*")
 
