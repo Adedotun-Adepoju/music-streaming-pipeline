@@ -1,4 +1,5 @@
 apache-airflow-providers-google 
 pandas
 python-dotenv
-gcsfs
+# gcsfs
+docker
