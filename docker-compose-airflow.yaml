@@ -53,10 +53,10 @@ x-airflow-common:
   #   &airflow-common-env
 
   volumes:
-    - ./dags:/opt/airflow/dags
-    - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
-    - ./drivers:/opt/airflow/drivers
+    - ./airflow//dags:/opt/airflow/dags
+    - ./airflow/logs:/opt/airflow/logs
+    - ./airflow/plugins:/opt/airflow/plugins
+    - ./airflow/drivers:/opt/airflow/drivers
     - ~/.google/credentials/:/.google/credentials:ro
   networks: 
     - event-network
@@ -82,6 +82,8 @@ services:
       interval: 5s
       retries: 5
     restart: always
+    networks: 
+      - event-network
 
   redis:
     image: redis:latest
@@ -93,6 +95,8 @@ services:
       timeout: 30s
       retries: 50
     restart: always
+    networks: 
+     - event-network
 
   airflow-webserver:
     <<: *airflow-common
@@ -109,6 +113,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks: 
+      - event-network
 
   airflow-scheduler:
     <<: *airflow-common
@@ -123,6 +129,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks: 
+      - event-network
 
   airflow-worker:
     <<: *airflow-common
@@ -144,6 +152,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks: 
+      - event-network
 
   airflow-triggerer:
     <<: *airflow-common
@@ -158,6 +168,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks: 
+      - event-network
 
   airflow-init:
     <<: *airflow-common
@@ -222,7 +234,6 @@ services:
           echo "   https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#before-you-begin"
           echo
         fi
-        mkdir -p /sources/logs /sources/dags /sources/plugins
         chown -R "${AIRFLOW_UID}:0" /sources/{logs,dags,plugins}
         exec /entrypoint airflow version
     # yamllint enable rule:line-length
@@ -231,7 +242,9 @@ services:
     #   <<: *airflow-common-env
     user: "0:0"
     volumes:
-      - .:/sources
+      - ./airflow:/sources
+    networks: 
+      - event-network
 
   airflow-cli:
     <<: *airflow-common
@@ -245,7 +258,8 @@ services:
       - bash
       - -c
       - airflow
-
+    networks: 
+      - event-network
   # You can enable flower by adding "--profile flower" option e.g. docker-compose --profile flower up
   # or by explicitly targeted on the command line e.g. docker-compose up flower.
   # See: https://docs.docker.com/compose/profiles/
@@ -266,6 +280,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks: 
+      - event-network
 
 volumes:
   postgres-db-volume:
