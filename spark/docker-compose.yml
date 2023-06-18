@@ -10,12 +10,14 @@ services:
     environment:
       - SPARK_MODE=master
     ports:
-      - '8080:8080'
+      - '8082:8080'
       - '4040:4040'
       - '7077:7077'
     volumes:
       - ./data:/data
       - ./src:/src
+    networks: 
+      - spark-network
   spark-worker:
     image: docker.io/bitnami/spark:3.3
     environment:
@@ -28,3 +30,10 @@ services:
     volumes:
       - ./data:/data
       - ./src:/src 
+    networks:
+      - spark-network
+
+networks:
+  spark-network:
+    name: spark-network
+    driver: bridge
