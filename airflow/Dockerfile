@@ -10,7 +10,7 @@ RUN apt-get update -qq && apt-get install vim -qqq
 
 
 USER ${AIRFLOW_UID}
-COPY requirements.txt .
+COPY ./airflow/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt 
 
 SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-x", "-c"]
