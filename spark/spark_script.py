@@ -27,7 +27,7 @@ df_listen_events.printSchema()
 #     .select(from_json(col("value"), listen_events_schema).alias("data"))\
 #         .select("data.*")
 
-query = df_status_events.writeStream \
+query = df_listen_events.writeStream \
     .format("console") \
     .outputMode("append") \
     .start() \
