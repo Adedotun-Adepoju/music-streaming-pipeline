@@ -13,7 +13,7 @@ Thumbs.db
 *.tfstate.*
 **.terraform
 **.terraform.lock.*
-terraform*
+# terraform*
 .env
 **__pycache__/
 **google_credentials.json
