@@ -1,4 +1,5 @@
 terraform {
+	required_version = ">=1.0"
   backend "local" {}
 	required_providers {
 		google = {
@@ -67,4 +68,29 @@ resource "google_dataproc_cluster" "music-streaming-cluster"{
 			machine_type     = "n1-standard-4"
 		}
 	}
+}
+
+# Compute engine
+# Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance
+resource "google_compute_instance" "default" {
+  name = var.compute_engine
+  # region = var.region
+  zone = var.zone
+  machine_type = "custom-4-16384" # 4 CPUs and 16GB ram
+
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+      type = "pd-balanced"
+      size = 30
+    }
+  }
+
+  network_interface {
+    network = "default"
+
+    access_config {
+      // Ephemeral public IP
+    }
+  }
 }

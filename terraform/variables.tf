@@ -14,17 +14,23 @@ variable region {
 }
 
 variable "zone"{
-    description = "Zone for GCP resources"
-    default = "europe-west1-b"
+	description = "Zone for GCP resources"
+	default = "europe-west1-b"
 }
 
 variable streams_bucket {
-	description = "Bucket for storing files from dataproc"
-	default = "music-streams-staging-bucket"
+description = "Bucket for storing files from dataproc"
+default = "music-streams-staging-bucket"
 }
 
 variable "storage_class" {
-    description = "Storage class type for your bucket"
-    default = "STANDARD"
+	description = "Storage class type for your bucket"
+	default = "STANDARD"
+}
+
+variable "compute_engine" {
+	description = "VM instance name"
+	default = "kafka-airflow-engine"
+	type = string
 }
 
