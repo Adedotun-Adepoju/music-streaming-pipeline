@@ -2,6 +2,12 @@
 echo "here"
 cd eventsim 
 
+# Get current time 
+current_time=$(date -u "+%Y-%m-%dT%H:%M:%S")
+
+# Calculate time from 30 minutes ago
+last_30_minutes=$(date -d '30 minutes ago' "+%Y-%m-%dT%H:%M:%S")
+
 echo "Building docker image to generate events...."
 sudo docker build -t eventsim .
 
@@ -14,8 +20,8 @@ sudo docker run -itd \
     --memory-swap="7g" \
     eventsim \
         -c "examples/example-config.json" \
-        --start-time "2016-09-01T00:00:00" \
-        --end-time "2016-09-01T05:00:00" \
+        --start-time $last_30_minutes \
+        --end-time $current_time \
         --nusers 5000 \
         --growth-rate 0.25 \
         --userid 1 \
