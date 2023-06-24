@@ -36,6 +36,22 @@ resource "google_storage_bucket" "music-streaming-bucket" {
    force_destroy = true
 }
 
+resource "google_compute_firewall" "port_rules" {
+  project     = var.project
+  name        = "kafka-broker-port"
+  network     = var.network
+  description = "Opens port 9092 in the Kafka VM for Spark cluster to connect"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["9092"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["kafka"]
+
+}
+
 # Dataproc
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/dataproc_cluster
 resource "google_dataproc_cluster" "music-streaming-cluster"{
@@ -52,6 +68,15 @@ resource "google_dataproc_cluster" "music-streaming-cluster"{
 
 			optional_components = ["DOCKER", "JUPYTER"]
 		}
+
+    gce_cluster_config {
+      network = var.network
+      zone    = var.zone
+
+      shielded_instance_config {
+        enable_secure_boot = true
+      }
+    }
 
 		master_config{
       num_instances = 1
@@ -72,10 +97,11 @@ resource "google_dataproc_cluster" "music-streaming-cluster"{
 
 # Compute engine
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "kafka_airflow_instance" {
   name = var.compute_engine
   # region = var.region
   zone = var.zone
+  tags = ["kafka"]
   machine_type = "custom-4-16384" # 4 CPUs and 16GB ram
 
   boot_disk {
@@ -87,10 +113,9 @@ resource "google_compute_instance" "default" {
   }
 
   network_interface {
-    network = "default"
-
+    network = var.network
     access_config {
-      // Ephemeral public IP
     }
   }
+
 }
