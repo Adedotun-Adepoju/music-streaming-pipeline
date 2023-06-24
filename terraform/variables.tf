@@ -34,3 +34,8 @@ variable "compute_engine" {
 	type = string
 }
 
+variable "network" {
+	description = "Network for vm instance and dataproc clusters"
+	type = string
+	default = "default"
+} 
