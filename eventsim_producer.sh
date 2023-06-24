@@ -3,19 +3,19 @@ echo "here"
 cd eventsim 
 
 echo "Building docker image to generate events...."
-docker build -t eventsim .
+sudo docker build -t eventsim .
 
 echo "Running the container to generate events..."
-docker rm streaming_events
-docker run -itd \
+sudo docker rm streaming_events
+sudo docker run -itd \
     --network host \
     --name streaming_events \
     --memory="5.5g" \
     --memory-swap="7g" \
     eventsim \
         -c "examples/example-config.json" \
-        --start-time "2015-06-01T00:00:00" \
-        --end-time "2015-06-01T05:00:00" \
+        --start-time "2016-08-01T00:00:00" \
+        --end-time "2016-08-01T05:00:00" \
         --nusers 5000 \
         --growth-rate 0.25 \
         --userid 1 \

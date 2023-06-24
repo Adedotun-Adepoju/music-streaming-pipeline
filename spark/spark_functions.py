@@ -1,6 +1,6 @@
 from pyspark.sql.functions import from_json, col
 
-def process_events(spark, kafka_server, topic, schema, starting_offset="earliest"):
+def process_events(spark, kafka_server, topic, schema, starting_offset="latest"):
     """
     Process specified events from kafka topics
 
