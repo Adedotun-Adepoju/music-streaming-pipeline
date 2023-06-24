@@ -2,9 +2,10 @@ from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructField, StructType, IntegerType, StringType, FloatType
 from pyspark.sql.functions import from_json, col
-from spark_functions import process_events, get_last_offsets
+from spark_functions import process_events
 from schemas import listen_events_schema, auth_events_schema, page_view_events_schema, status_change_events_schema
 import time
+import datetime
 
 spark = (SparkSession
     .builder
@@ -20,26 +21,24 @@ PAGE_VIEW_EVENTS_TOPIC = "page_view_events"
 STATUS_CHANGE_EVENTS = "status_change_events"
 KAFKA_BOOTSTRAP_SERVER = "34.79.233.22:9092"
 
-GCS_BUCKET = "music_streams_spark_jobs"
+GCS_BUCKET = "music-streams-staging_bucket"
+SPARK_JOBS_BUCKET = "music_streams_spark_jobs"
 
 GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files"
-GCS_CHECKPOINT_PATH = f"gs://{GCS_BUCKET}/checkpoints"
+GCS_CHECKPOINT_PATH = f"gs://{SPARK_JOBS_BUCKET}/checkpoints"
 
-# offset = get_last_offsets(GCS_CHECKPOINT_PATH)
-# print(offset)
-
-df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema, offset)
-# df_auth_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, AUTH_EVENTS_TOPIC, auth_events_schema)
-# df_page_view_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, PAGE_VIEW_EVENTS_TOPIC, page_view_events_schema)
-# df_status_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, STATUS_CHANGE_EVENTS, status_change_events_schema)
+df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema)
 
 df_listen_events.printSchema()
+
+timestamp = datetime.datetime.now().strftime("%Y-%M-%D_%H-%M-%S")
+file_name = f"{timestamp}.parquet"
 
 write_stream_writer = (df_listen_events
     .writeStream
     .format("parquet")
     # .partitionBy("month", "day", "hour")
-    .option("path", GCS_STORAGE_PATH)
+    .option("path", f"{GCS_STORAGE_PATH}/{file_name}")
     .option("checkpointLocation", GCS_CHECKPOINT_PATH)
     .trigger(processingTime="300 seconds")
     .outputMode("append")

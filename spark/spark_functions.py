@@ -29,7 +29,6 @@ import subprocess
 #     return output.decode()
 
 def process_events(spark, kafka_server, topic, schema, starting_offset="latest"):
-    print("here", starting_offset)
     """
     Process specified events from kafka topics
 
@@ -48,7 +47,7 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
         spark.readStream.format("kafka")
         .option("kafka.bootstrap.servers", kafka_server)
         .option("subscribe", topic)
-        .option("startingOffsets", latest)
+        .option("startingOffsets", starting_offset)
         .load()
         .selectExpr("CAST(value AS STRING)")
         .select(from_json(col("value"), schema).alias("data"))

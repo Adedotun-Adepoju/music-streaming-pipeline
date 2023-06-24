@@ -14,8 +14,8 @@ sudo docker run -itd \
     --memory-swap="7g" \
     eventsim \
         -c "examples/example-config.json" \
-        --start-time "2016-08-01T00:00:00" \
-        --end-time "2016-08-01T05:00:00" \
+        --start-time "2016-09-01T00:00:00" \
+        --end-time "2016-09-01T05:00:00" \
         --nusers 5000 \
         --growth-rate 0.25 \
         --userid 1 \
