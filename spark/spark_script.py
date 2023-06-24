@@ -25,8 +25,8 @@ GCS_BUCKET = "music_streams_spark_jobs"
 GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files"
 GCS_CHECKPOINT_PATH = f"gs://{GCS_BUCKET}/checkpoints"
 
-offset = get_last_offsets(GCS_CHECKPOINT_PATH)
-print(offset)
+# offset = get_last_offsets(GCS_CHECKPOINT_PATH)
+# print(offset)
 
 df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema, offset)
 # df_auth_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, AUTH_EVENTS_TOPIC, auth_events_schema)
