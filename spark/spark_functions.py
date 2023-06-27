@@ -1,5 +1,6 @@
-from pyspark.sql.functions import from_json, col
+# from pyspark.sql.functions import from_json, col
 import subprocess
+from google.cloud import storage
 
 # def get_last_offsets(checkpointLocation):
 #     """
@@ -55,3 +56,22 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
     )
 
     return df
+
+def create_folder(bucket_name, directory):
+    print(directory)
+    print(bucket_name)
+    # Initialize the client
+    client = storage.Client()
+
+    # Get the bucket
+    bucket = client.get_bucket(bucket_name)
+
+    blobs = bucket.list_blobs(prefix='files' + '/')
+
+    # Check if any objects are returned
+    exists = any(True for _ in blobs)
+
+    stats = storage.Blob(bucket=bucket, name = 'files/').exists(client)
+
+    print("here we are", exists)
+
