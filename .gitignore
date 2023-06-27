@@ -18,3 +18,4 @@ Thumbs.db
 **__pycache__/
 **google_credentials.json
 **logs/
+demo.py

@@ -15,6 +15,13 @@ spark = (SparkSession
 
 spark.streams.resetTerminated()
 
+today = datetime.datetime.now()
+
+year = today.strftime('%Y')
+month = today.strftime('%h') # abbreviated month
+day = today.strftime('%d')
+hour = today.strftime('%H')
+
 LISTEN_EVENTS_TOPIC = "listen_events"
 AUTH_EVENTS_TOPIC = "auth_events"
 PAGE_VIEW_EVENTS_TOPIC = "page_view_events"
@@ -24,7 +31,7 @@ KAFKA_BOOTSTRAP_SERVER = "34.79.233.22:9092"
 GCS_BUCKET = "music-streams-staging_bucket"
 SPARK_JOBS_BUCKET = "music_streams_spark_jobs"
 
-GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files"
+GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files/{year}/{month}/{day}/{hour}"
 GCS_CHECKPOINT_PATH = f"gs://{SPARK_JOBS_BUCKET}/checkpoints"
 
 df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema)
