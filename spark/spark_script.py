@@ -29,7 +29,9 @@ PAGE_VIEW_EVENTS_TOPIC = "page_view_events"
 STATUS_CHANGE_EVENTS = "status_change_events"
 KAFKA_BOOTSTRAP_SERVER = "34.79.233.22:9092"
 
-GCS_BUCKET = "music-streams-staging_bucket"
+"music-streams-staging-bucket"
+
+GCS_BUCKET = "music-streams-staging-bucket"
 SPARK_JOBS_BUCKET = "music_streams_spark_jobs"
 
 directory = f"files/{year}/{month}/{day}/{hour}/"

@@ -64,14 +64,17 @@ def create_folder(bucket_name, directory):
     client = storage.Client()
 
     # Get the bucket
-    bucket = client.get_bucket(bucket_name)
+    bucket = client.get_bucket("")
 
-    blobs = bucket.list_blobs(prefix='files' + '/')
+    buckets = client.list_buckets()
+
+
+    # blobs = bucket.list_blobs(prefix='files' + '/')
 
     # Check if any objects are returned
-    exists = any(True for _ in blobs)
+    # exists = any(True for _ in blobs)
 
-    stats = storage.Blob(bucket=bucket, name = 'files/').exists(client)
+    # stats = storage.Blob(bucket=bucket, name = 'files/').exists(client)
 
-    print("here we are", exists)
+    # print("here we are", exists)
 
