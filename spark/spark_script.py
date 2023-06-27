@@ -20,7 +20,7 @@ today = datetime.datetime.now()
 year = today.strftime('%Y')
 month = today.strftime('%h') # abbreviated month
 day = today.strftime('%d')
-hour = today.strftime('%H')
+hour = int(today.strftime('%H')) + 1
 
 LISTEN_EVENTS_TOPIC = "listen_events"
 AUTH_EVENTS_TOPIC = "auth_events"
