@@ -39,3 +39,9 @@ variable "network" {
 	type = string
 	default = "default"
 } 
+
+variable "streams_dataset" {
+    description = "BigQuery Dataset to be save streams events"
+    type = string
+    default = "streaming_events"
+}

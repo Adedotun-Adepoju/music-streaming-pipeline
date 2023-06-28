@@ -119,3 +119,11 @@ resource "google_compute_instance" "kafka_airflow_instance" {
   }
 
 }
+
+# Data warehouse 
+# Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_dataset
+resource "google_bigquery_dataset" "streams_dataset" {
+    dataset_id = var.streams_dataset
+    project = var.project
+    location = var.region
+}
