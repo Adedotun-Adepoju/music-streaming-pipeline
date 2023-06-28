@@ -20,32 +20,35 @@ today = datetime.datetime.now()
 year = today.strftime('%Y')
 month = today.strftime('%h') # abbreviated month
 day = today.strftime('%d')
-hour = today.strftime('%H')
+hour = int(today.strftime('%H')) + 1
 
 LISTEN_EVENTS_TOPIC = "listen_events"
 AUTH_EVENTS_TOPIC = "auth_events"
 PAGE_VIEW_EVENTS_TOPIC = "page_view_events"
 STATUS_CHANGE_EVENTS = "status_change_events"
-KAFKA_BOOTSTRAP_SERVER = "34.79.233.22:9092"
+KAFKA_BOOTSTRAP_SERVER = "104.199.56.95:9092"
 
-GCS_BUCKET = "music-streams-staging_bucket"
+GCS_BUCKET = "music-streams-staging-bucket"
 SPARK_JOBS_BUCKET = "music_streams_spark_jobs"
 
-GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files/{year}/{month}/{day}/{hour}"
-GCS_CHECKPOINT_PATH = f"gs://{SPARK_JOBS_BUCKET}/checkpoints"
+GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files/listen_events/{year}/{month}/{day}/{hour}"
+GCS_CHECKPOINT_PATH = f"gs://{SPARK_JOBS_BUCKET}/tracking"
 
 df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema)
 
 df_listen_events.printSchema()
 
-timestamp = datetime.datetime.now().strftime("%Y-%M-%D_%H-%M-%S")
-file_name = f"{timestamp}.parquet"
+# timestamp = datetime.datetime.now().strftime("%Y-%M-%D_%H-%M-%S")
+# file_name = f"{timestamp}.parquet"
+
+print("path",GCS_STORAGE_PATH)
+# print("file_name", file_name)
 
 write_stream_writer = (df_listen_events
     .writeStream
     .format("parquet")
     # .partitionBy("month", "day", "hour")
-    .option("path", f"{GCS_STORAGE_PATH}/{file_name}")
+    .option("path", GCS_STORAGE_PATH)
     .option("checkpointLocation", GCS_CHECKPOINT_PATH)
     .trigger(processingTime="300 seconds")
     .outputMode("append")
