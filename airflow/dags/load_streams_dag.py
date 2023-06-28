@@ -22,7 +22,6 @@ PREFIX = 'files/'
 def process_file(**context):
     file_names = context['ti'].xcom_pull(task_ids='list_files')
     logging.info(file_names)
-    print(file_names)
 
 default_args = {
     'owner': 'Adedotun Adepoju',
@@ -66,8 +65,31 @@ list_files = GoogleCloudStorageListOperator(
 process_files = PythonOperator(
     task_id="process_files",
     python_callable=process_file,
-    # op_kwargs={'file_name': '{{ task_instance.xcom_pull(task_ids="list_files")[0] }}'},
-    provide_context=True,
+    provide_context=True, # context to fetch xcoms from the previous task
+    dag=dag
+)
+
+# Load files to BigQuery 
+load_files = GCSToBigQueryOperator(
+    task_id = "gcs_to_big_query",
+    bucket = BUCKET,
+    source_objects=[f"{FILE_DIRECTORY}*.parquet"],
+    destination_project_dataset_table='streaming_events.listen_events',
+    source_format='PARQUET',
+    autodetect=True,
+    schema_fields = [
+        {'name': 'userId', 'type': 'INTEGER'},
+        {'name': 'song', 'type': 'STRING'},
+        {'name': 'artist', 'type': 'STRING'},
+        {'name': 'state', 'type': 'STRING'},
+        {'name': 'city', 'type': 'STRING'},
+        {'name': 'firstName', 'type': 'STRING'},
+        # {'name': 'duration', 'type': 'DECIMAL'},
+        # {'name': 'year', 'type': 'INTEGER'},
+        # {'name': 'day', 'type': 'INTEGER'},
+        # {'name': 'hour', 'type': 'INTEGER'},
+    ],
+    write_disposition='WRITE_TRUNCATE',
     dag=dag
 )
 
@@ -77,7 +99,7 @@ task1 = BashOperator(
     dag=dag
 )
 
-list_files >> process_files >> task1
+list_files >> process_files >> load_files >> task1
 
 
 
