@@ -63,6 +63,12 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
         .withColumn('month', month(spark_df["timestamp"]))
         .withColumn('day', dayofmonth(spark_df["timestamp"]))
         .withColumn('hour', hour(spark_df["timestamp"]))
+        .withColumn('full_name', concat(spark_df["firstName"], lit(" "), df["lastName"]))
     )
 
-    return df
+    spark_df = (spark_df
+        .withColumnRenamed("lon", "longitude")
+        .withColumnRenamed("lat", "latitude")
+    )
+
+    return spark_df
