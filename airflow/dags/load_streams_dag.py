@@ -40,16 +40,18 @@ dag = DAG(
 )
 
 # GCS directory to check for files
+
+# Airflow uses UTC. One hour behind WAT
 current_time = datetime.now()
-one_hour_ago = current_time - timedelta(hours=1)
+# one_hour_ago = current_time - timedelta(hours=1) 
 
-year = one_hour_ago.strftime('%Y')
-month = one_hour_ago.strftime('%h')
-day = one_hour_ago.strftime('%d')
-hour = one_hour_ago.strftime('%H')
+year = current_time.strftime('%Y')
+month = current_time.strftime('%h')
+day = current_time.strftime('%d')
+hour = int(current_time.strftime('%H')) # Check for the previous hour. Remember this is UTC and VM generates WAT
 
-FILE_DIRECTORY = f"files/listen_events/{ year }/{ month }/{ day }/13/"
-logging.info("here")
+FILE_DIRECTORY = f"files/listen_events/{ year }/{ month }/{ day }/{ hour }/"
+logging.info("here", FILE_DIRECTORY)
 # Define the tasks 
 
 # List all files in the GCS directory
@@ -81,17 +83,16 @@ load_files = GCSToBigQueryOperator(
         {'name': 'userId', 'type': 'INTEGER'},
         {'name': 'song', 'type': 'STRING'},
         {'name': 'artist', 'type': 'STRING'},
-        {'name': 'duration', 'type': 'DECIMAL'},
+        {'name': 'duration', 'type': 'FLOAT'},
         {'name': 'state', 'type': 'STRING'},
         {'name': 'city', 'type': 'STRING'},
         {'name': 'full_name', 'type': 'STRING'},
-        {'name': 'timestamp', 'type': 'STRING'},
         {'name': 'year', 'type': 'INTEGER'},
         {'name': 'month', 'type': 'INTEGER'},
         {'name': 'day', 'type': 'INTEGER'},
         {'name': 'hour', 'type': 'INTEGER'},
     ],
-    write_disposition='WRITE_TRUNCATE',
+    write_disposition='WRITE_APPEND',
     dag=dag
 )
 
