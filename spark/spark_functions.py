@@ -58,7 +58,7 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
     )
 
     spark_df = (spark_df
-        .withColumn('timestamp', (spark_df['ts']/1000).cast("timestamp"))
+        .withColumn('date', (spark_df['ts']/1000).cast("string"))
         .withColumn('year', year(spark_df["timestamp"]))
         .withColumn('month', month(spark_df["timestamp"]))
         .withColumn('day', dayofmonth(spark_df["timestamp"]))
