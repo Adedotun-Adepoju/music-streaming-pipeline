@@ -1,4 +1,4 @@
-from pyspark.sql.functions import from_json, col
+from pyspark.sql.functions import from_json, year, month, dayofmonth, hour
 import subprocess
 
 # def get_last_offsets(checkpointLocation):
@@ -43,15 +43,26 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
         Processed Dataframe
     """
 
-    df = (
+    kafka_stream = (
         spark.readStream.format("kafka")
         .option("kafka.bootstrap.servers", kafka_server)
         .option("subscribe", topic)
         .option("startingOffsets", starting_offset)
         .load()
+    )
+
+    spark_df = (kafka_stream       
         .selectExpr("CAST(value AS STRING)")
         .select(from_json(col("value"), schema).alias("data"))
         .select("data.*")
+    )
+
+    spark_df = (spark_df
+        .withColumn('timestamp', (spark_df['ts']/1000).cast("timestamp"))
+        .withColumn('year', year(spark_df["timestamp"]))
+        .withColumn('month', month(spark_df["timestamp"]))
+        .withColumn('day', dayofmonth(spark_df["timestamp"]))
+        .withColumn('hour', hour(spark_df["timestamp"]))
     )
 
     return df

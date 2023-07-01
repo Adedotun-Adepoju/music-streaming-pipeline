@@ -38,9 +38,6 @@ df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_T
 
 df_listen_events.printSchema()
 
-# timestamp = datetime.datetime.now().strftime("%Y-%M-%D_%H-%M-%S")
-# file_name = f"{timestamp}.parquet"
-
 print("path",GCS_STORAGE_PATH)
 # print("file_name", file_name)
 
