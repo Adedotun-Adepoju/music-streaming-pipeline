@@ -84,7 +84,7 @@ load_files = GCSToBigQueryOperator(
         {'name': 'song', 'type': 'STRING'},
         {'name': 'artist', 'type': 'STRING'},
         {'name': 'duration', 'type': 'FLOAT'},
-        {'name': 'timestamp', 'type': 'DATETIME'},
+        {'name': 'timestamp', 'type': 'STRING'},
         {'name': 'gender', 'type': 'STRING'},
         {'name': 'auth', 'type': 'STRING'},
         {'name': 'state', 'type': 'STRING'},
