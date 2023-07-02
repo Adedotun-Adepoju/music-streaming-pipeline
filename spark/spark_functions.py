@@ -1,4 +1,4 @@
-from pyspark.sql.functions import from_json, year, month, dayofmonth, hour
+from pyspark.sql.functions import from_json, year, month, dayofmonth, hour, col, concat, lit, udf
 import subprocess
 
 def get_last_offsets(checkpointLocation):
@@ -29,7 +29,18 @@ def get_last_offsets(checkpointLocation):
 
     return output.decode()
 
-def process_events(spark, kafka_server, topic, schema, starting_offset="latest"):
+# @udf
+# def string_decode(s, encoding='utf-8'):
+#     if s:
+#         return (s.encode('latin1')         # To bytes, required by 'unicode-escape'
+#             .decode('unicode-escape') # Perform the actual octal-escaping decode
+#             .encode('latin1')         # 1:1 mapping back to bytes
+#             .decode(encoding)         # Decode original encoding
+#             .strip('\"'))
+#     else:
+#         return s
+
+def process_events(spark, kafka_server, topic, schema, starting_offset="earliest"):
     """
     Process specified events from kafka topics
 
@@ -59,13 +70,14 @@ def process_events(spark, kafka_server, topic, schema, starting_offset="latest")
         .select("data.*")
     )
 
+    df = df.withColumn('timestamp', (df['ts']/1000).cast("string"))
+
     df = (df
-        .withColumn('date', (spark_df['ts']/1000).cast("string"))
-        .withColumn('year', year(spark_df["timestamp"]))
-        .withColumn('month', month(spark_df["timestamp"]))
-        .withColumn('day', dayofmonth(spark_df["timestamp"]))
-        .withColumn('hour', hour(spark_df["timestamp"]))
-        .withColumn('full_name', concat(spark_df["firstName"], lit(" "), df["lastName"]))
+        .withColumn('year', year(df["timestamp"]))
+        .withColumn('month', month(df["timestamp"]))
+        .withColumn('day', dayofmonth(df["timestamp"]))
+        .withColumn('hour', hour(df["timestamp"]) + 1)
+        .withColumn('full_name', concat(df["firstName"], lit(" "), df["lastName"]))
     )
 
     df = (df
