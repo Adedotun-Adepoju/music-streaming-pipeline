@@ -2,7 +2,7 @@
 - [Music Streaming ETL pipeline](#music-streaming-pipeline)
     - [Description](#description)
     - [Architecture](#architecture)
-    - [Final Results](#final-results)
+    - [Dashboard](#final-results)
     - [Setup](#setup)
 
 ## Description
@@ -24,4 +24,7 @@
     <img alt="pipeline architecture" src="./assets/architecture.png">
 </p>
 
-## Final Results
+## Dashboard
+<p align="left">
+    <img alt="pipeline architecture" src="./assets/dashboard.png">
+</p>
