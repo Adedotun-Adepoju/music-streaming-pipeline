@@ -20,3 +20,8 @@
 - Data Warehouse: BigQuery 
 - Data Visualization: Google Data Studio
 
+<p align="left">
+    <img alt="pipeline architecture" src="./assets/architecture.png">
+</p>
+
+## Final Results
