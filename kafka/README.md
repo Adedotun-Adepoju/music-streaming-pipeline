@@ -53,3 +53,7 @@ cat env.example >> .env
 docker-compose -f docker-compose-kafka.yaml up -d
 ```
 - Forward port 9021 to your local machine to access the control center on your local machine. If using Remote-ssh on VS code, go to the ports tab beside the terminal and forward port 9021.
+
+- Try visiting the address http://localhost:9021. The Kafka control center should open.
+
+- With that, the kafka server has been started and we can start publishing events to it and consuming from it
