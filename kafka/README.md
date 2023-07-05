@@ -42,3 +42,9 @@ bash vm_setup.sh
 ``` sh
 export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.google/credentials/<name-of/credential-file.json>"' >> ~/.bashrc
 ```
+- Copy the contents in the env.example file to the environment file
+```sh 
+cat env.example >> .env
+```
+- Edit the external IP address in the env file. Locate the "KAFKA_ADVERTISED_LISTENERS. Change the External-IP-Address to the External IP of the VM
+
