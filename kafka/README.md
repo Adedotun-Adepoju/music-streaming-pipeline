@@ -13,8 +13,32 @@ Host vm-instance
     User <username used to create the ssh key>
     IdentityFIle <path to the private ssh key>
 ```
+- Transfer your service account JSON file from your local machine to the VM instance
+```sh
+# Connect to the instance using SFTP
+sftp vm-instance
+mkdir -p .google/credentials
+cd .google/credentials
+# dump the google credential file to the google/credentials directory on the VM instance
+put <path to your google credentials>
+```
 - After setting this up, you can then SSH into the new servers using the command below
 ```sh
 ssh vm-instance
 ```
+
 - If you use VS code as your editor, you can install the Remote-SSH extension. This allows you to open any folder on a remote machine using SSH.
+- Once you establish a connection, you can clone the git repo 
+```sh
+git clone https://github.com/Adedotun-Adepoju/music-streaming-pipeline.git
+cd music-streaming-pipeline
+```
+- Install necessary dependencies
+```sh
+# Run the VM setup script to install needed dependencies
+bash vm_setup.sh
+```
+- Set environment varibales to point to the GCP keys:
+``` sh
+export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.google/credentials/<name-of/credential-file.json>"' >> ~/.bashrc
+```
