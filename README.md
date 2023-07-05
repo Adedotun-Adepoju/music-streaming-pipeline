@@ -30,3 +30,8 @@
 </p>
 
 ## Setup
+
+# :construction_worker: Infrastructure setup
+#### Set up a GCP account
+- Ensure you have an account with billing setup 
+- Setup Terraform
