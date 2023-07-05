@@ -28,3 +28,5 @@
 <p align="left">
     <img alt="pipeline architecture" src="./assets/dashboard.png">
 </p>
+
+## Setup
