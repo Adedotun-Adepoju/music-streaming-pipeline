@@ -48,3 +48,8 @@ cat env.example >> .env
 ```
 - Edit the external IP address in the env file. Locate the "KAFKA_ADVERTISED_LISTENERS. Change the External-IP-Address to the External IP of the VM
 
+- Start the docker containers for Kafka
+```sh
+docker-compose -f docker-compose-kafka.yaml up -d
+```
+- Forward port 9021 to your local machine to access the control center on your local machine. If using Remote-ssh on VS code, go to the ports tab beside the terminal and forward port 9021.
