@@ -34,4 +34,5 @@
 # :construction_worker: Infrastructure setup
 #### Set up a GCP account
 - Ensure you have an account with billing setup 
-- Setup Terraform
+- Set up a new project if you do not have one 
+- Setup Terraform [Terraform](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/terraform/README.MD)
