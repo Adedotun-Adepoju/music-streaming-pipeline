@@ -36,3 +36,4 @@
 - Ensure you have an account with billing setup 
 - Set up a new project if you do not have one 
 - Setup Terraform [Terraform](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/terraform/README.MD)
+- Set up Kafka instance on VM [Kafka](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/kafka/README.md)
