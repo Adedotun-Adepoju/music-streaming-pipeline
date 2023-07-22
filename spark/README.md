@@ -1,7 +1,12 @@
 # Spark cluster setup
+- SSH into the vm instance using the command below
+```sh
+ssh vm-instance
+```
+
 - Open this file [spark_script.py](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/spark_script.py) and change the following variables in the scipt
 ```sh
- KAFKA_BOOTSTRAP_SERVER = <EXTERNAL IP ADDRESS OF THE KAFKA VM INSTANCE>
+ KAFKA_BOOTSTRAP_SERVER = <EXTERNAL IP ADDRESS OF THE VM INSTANCE>
  KAFKA_PORT = <PORT EXPOSED IN THE FIREWALL> Default to 9092
  GCS_BUCKET = <GCS BUCKET TO WRITE THE PARQUET FILES TO>
  SPARK_JOBS_BUCKET = <BUCKET TO STORE SPARK CHECKPOINTS FILES FOR TRACKING MESSAGES THAT HAVE BEEN CONSUMED>

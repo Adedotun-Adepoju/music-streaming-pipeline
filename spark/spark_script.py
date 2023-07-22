@@ -26,15 +26,17 @@ LISTEN_EVENTS_TOPIC = "listen_events"
 AUTH_EVENTS_TOPIC = "auth_events"
 PAGE_VIEW_EVENTS_TOPIC = "page_view_events"
 STATUS_CHANGE_EVENTS = "status_change_events"
-KAFKA_BOOTSTRAP_SERVER = "104.199.56.95:9092"
 
-GCS_BUCKET = "music-streams-staging-bucket"
-SPARK_JOBS_BUCKET = "music_streams_spark_jobs"
+
+KAFKA_BOOTSTRAP_SERVER = "<EXTERNAL IP ADDRESS OF KAFKA VM INSTANCE"
+KAFKA_PORT = "9092" # Only change this if you made changes in the kafka docker-compose file and terraform main file
+GCS_BUCKET = "<ENTER YOUR GCS_BUCKET TO SAVE PROCESSED FILES>"
+SPARK_JOBS_BUCKET = "<ENTER YOUR GCS_BUCKET TO SAVE SPARK CONFIGURATION FILES>"
 
 GCS_STORAGE_PATH = f"gs://{GCS_BUCKET}/files/listen_events/{year}/{month}/{day}/{hour}"
 GCS_CHECKPOINT_PATH = f"gs://{SPARK_JOBS_BUCKET}/tracking"
 
-df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, LISTEN_EVENTS_TOPIC, listen_events_schema)
+df_listen_events = process_events(spark, KAFKA_BOOTSTRAP_SERVER, KAFKA_PORT, LISTEN_EVENTS_TOPIC, listen_events_schema)
 
 df_listen_events.printSchema()
 
