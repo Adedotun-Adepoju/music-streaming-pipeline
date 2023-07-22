@@ -1,4 +1,4 @@
-from pyspark.sql.functions import from_json, year, month, dayofmonth, hour
+from pyspark.sql.functions import from_json, year, month, dayofmonth, hour, col, concat, lit
 import subprocess
 
 # def get_last_offsets(checkpointLocation):
@@ -57,13 +57,14 @@ def process_events(spark, kafka_server, kafka_port, topic, schema, starting_offs
         .select("data.*")
     )
 
+    spark_df = spark_df.withColumn('timestamp', (spark_df['ts']/1000).cast("timestamp"))
+
     spark_df = (spark_df
-        .withColumn('date', (spark_df['ts']/1000).cast("string"))
         .withColumn('year', year(spark_df["timestamp"]))
         .withColumn('month', month(spark_df["timestamp"]))
         .withColumn('day', dayofmonth(spark_df["timestamp"]))
         .withColumn('hour', hour(spark_df["timestamp"]))
-        .withColumn('full_name', concat(spark_df["firstName"], lit(" "), df["lastName"]))
+        .withColumn('full_name', concat(spark_df["firstName"], lit(" "), spark_df["lastName"]))
     )
 
     spark_df = (spark_df
