@@ -26,7 +26,7 @@ echo -e "\nSetup .bashrc...\n"
 echo -e ''>> ~/.bashrc
 echo -e 'export PATH=${HOME}/bin:${PATH}' >> ~/.bashrc
 echo -e ''>> ~/.bashrc
-echo -e 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.google/credentials/google_credentials.json"' >> ~/.bashrc
+# echo -e 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.google/credentials/google_credentials.json"' >> ~/.bashrc
 
 sudo docker --version
 docker-compose --version 

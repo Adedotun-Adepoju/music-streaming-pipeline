@@ -15,7 +15,7 @@ from airflow.utils.dates import days_ago # Makes scheduling easy
 from datetime import datetime, timedelta
 import time 
 
-BUCKET = 'music-streams-staging-bucket'
+BUCKET = os.environ.get("GCS_BUCKET")
 PREFIX = 'files/'
 
 # function to define what is done to each file
