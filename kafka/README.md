@@ -57,3 +57,9 @@ docker-compose -f docker-compose-kafka.yaml up -d
 - Try visiting the address http://localhost:9021. The Kafka control center should open.
 
 - With that, the kafka server has been started and we can start publishing events to it and consuming from it
+
+- Next we will start publishing events to Kafka.
+```sh
+bash eventsim_producer.sh
+```
+- After a few minutes, you can check the Kafka control center. You should see 4 topics that have been created. These are the topics eventsim will be writing its messages to
