@@ -20,3 +20,7 @@ cd spark
 bash submit_dataproc.sh
 ```
 - Spark will start processing and transforming the messages in micro-batches. The resulting parquet files will then be loaded to the specified GCS bucket. You can confirm this after a few minutes.
+
+- Note that this job will keep on running and listening for new messages from kafka. Whenever a new message comes in, it runs the job as specified in this file [spark_script.py](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/spark_script.py). 
+
+- To stop this job, you will need to go dataproc on the Google cloud console, locate your cluster and stop the job running. 
