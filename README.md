@@ -38,4 +38,4 @@
 - Setup Terraform [Terraform](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/terraform/README.MD)
 - Set up Kafka instance on VM and publish messages to kafka topics [Kafka](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/kafka/README.md)
 - Set up Spark Dataproc cluster to consume messges from Kafka topics [Spark](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/README.md)
-- Orchestrate workflow with Apache Airflow and CRON jobs [Airflow](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/README.md)
+- Orchestrate workflow with Apache Airflow and CRON jobs [Airflow](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/airflow/README.md)
