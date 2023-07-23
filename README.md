@@ -32,10 +32,10 @@
 ## Setup
 
 # :construction_worker: Infrastructure setup
-#### Set up a GCP account
+- Set up a GCP account
 - Ensure you have an account with billing setup 
 - Set up a new project if you do not have one 
-- Setup Terraform [Terraform](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/terraform/README.MD)
-- Set up Kafka instance on VM and publish messages to kafka topics [Kafka](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/kafka/README.md)
-- Set up Spark Dataproc cluster to consume messges from Kafka topics [Spark](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/README.md)
-- Orchestrate workflow with Apache Airflow and CRON jobs [Airflow](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/airflow/README.md)
+- Deploy necessary infrastructure with [Terraform](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/terraform/README.MD)
+- Set up Kafka instance on VM and publish messages to kafka topics [Kafka setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/kafka/README.md)
+- Set up Spark Dataproc cluster to consume messges from Kafka topics [Spark setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/README.md)
+- Orchestrate workflow with Apache Airflow and CRON jobs [Airflow setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/airflow/README.md)
