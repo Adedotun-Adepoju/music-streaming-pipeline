@@ -61,10 +61,13 @@ def process_events(spark, kafka_server, kafka_port, topic, schema, starting_offs
     spark_df = spark_df.withColumn('timestamp', (spark_df['ts']/1000).cast("timestamp"))
 
     spark_df = (spark_df
+        .withColumn('load_year', year(spark_df["timestamp"]))
         .withColumn('year', year(spark_df["timestamp"]))
+        .withColumn('load_month', date_format(spark_df["timestamp"], "MMM"))
         .withColumn('month', month(spark_df["timestamp"]))
-        .withColumn('abbr_month', date_format(spark_df["timestamp"], "MMM"))
+        .withColumn('load_day', dayofmonth(spark_df["timestamp"]))
         .withColumn('day', dayofmonth(spark_df["timestamp"]))
+        .withColumn('load_hour', hour(spark_df["timestamp"]) + 1)
         .withColumn('hour', hour(spark_df["timestamp"]) + 1)
         .withColumn('full_name', concat(spark_df["firstName"], lit(" "), spark_df["lastName"]))
     )

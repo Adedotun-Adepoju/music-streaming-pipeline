@@ -9,10 +9,11 @@ ssh vm-instance
  KAFKA_BOOTSTRAP_SERVER = <EXTERNAL IP ADDRESS OF THE VM INSTANCE>
  KAFKA_PORT = <PORT EXPOSED IN THE FIREWALL> Default to 9092
  GCS_BUCKET = <GCS BUCKET TO WRITE THE PARQUET FILES TO>
- SPARK_JOBS_BUCKET = <BUCKET TO STORE SPARK CHECKPOINTS FILES FOR TRACKING MESSAGES THAT HAVE BEEN CONSUMED>
+ SPARK_JOBS_BUCKET = <BUCKET TO STORE SPARK CHECKPOINTS FILES FOR TRACKING MESSAGES THAT HAVE BEEN CONSUMED AND ZIP FILES NEEDED FOR THE SPARK JOBS TO RUN >
 ```
+- Upload the spark_job_archive.zip file to the `SPARK_JOBS_BUCKET`
 
-- Open this file [submit_dataproc.sh](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/submit_dataproc.sh) and edit the jars flag on line 7 to point to the SPARK_JOBS_BUCKET name. This will compress the spark scripts needed for the spark jobs and load it to the specified bucket so the cluster can run the scripts from there
+- Open this file [submit_dataproc.sh](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/submit_dataproc.sh) and edit the jars flag on line 7 to point to the SPARK_JOBS_BUCKET name. This is so the cluster can run the scripts from there
 
 - Start consuming messages from the Kafka topics
 ```sh 

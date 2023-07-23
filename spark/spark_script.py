@@ -37,7 +37,7 @@ try:
     write_stream_writer = (df_listen_events
         .writeStream
         .format("parquet")
-        .partitionBy("year", "abbr_month", "day", "hour")
+        .partitionBy("load_year", "load_month", "load_day", "load_hour")
         .option("path", GCS_STORAGE_PATH)
         .option("checkpointLocation", GCS_CHECKPOINT_PATH)
         .trigger(processingTime="300 seconds")

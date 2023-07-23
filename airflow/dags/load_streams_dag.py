@@ -53,7 +53,7 @@ month = current_time.strftime('%h')
 day = current_time.strftime('%d')
 hour = int(current_time.strftime('%H')) # Check for the previous hour. Remember this is UTC and VM generates WAT
 
-FILE_DIRECTORY = f"files/listen_events/year={ year }/abbr_month={ month }/day={ day }/hour={ hour }/"
+FILE_DIRECTORY = f"files/listen_events/load_year={ year }/load_month={ month }/load_day={ day }/load_hour={ hour }/"
 logging.info("here", FILE_DIRECTORY)
 # Define the tasks 
 
