@@ -36,7 +36,8 @@ dag = DAG(
     dag_id = 'music-streaming-dag',
     default_args=default_args,
     description="DAG to load data streams to BigQuery",
-    schedule_interval='30 * * * *' # Minute 30 of every hours
+    schedule_interval='30 * * * *', # Minute 30 of every hours
+    catchup=False,
 )
 
 # GCS directory to check for files
@@ -50,7 +51,7 @@ month = current_time.strftime('%h')
 day = current_time.strftime('%d')
 hour = int(current_time.strftime('%H')) # Check for the previous hour. Remember this is UTC and VM generates WAT
 
-FILE_DIRECTORY = f"files/listen_events/{ year }/{ month }/{ day }/{ hour }/"
+FILE_DIRECTORY = f"files/listen_events/year={ year }/abbr_month={ month }/day={ day }/hour={ hour }/"
 logging.info("here", FILE_DIRECTORY)
 # Define the tasks 
 

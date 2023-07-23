@@ -1,4 +1,5 @@
-from pyspark.sql.functions import from_json, year, month, dayofmonth, hour, col, concat, lit
+from pyspark.sql.functions import from_json, year, month, dayofmonth, hour, col, concat, lit, date_format
+from pyspark.sql.types import StringType
 import subprocess
 
 # def get_last_offsets(checkpointLocation):
@@ -62,10 +63,13 @@ def process_events(spark, kafka_server, kafka_port, topic, schema, starting_offs
     spark_df = (spark_df
         .withColumn('year', year(spark_df["timestamp"]))
         .withColumn('month', month(spark_df["timestamp"]))
+        .withColumn('abbr_month', date_format(spark_df["timestamp"], "MMM"))
         .withColumn('day', dayofmonth(spark_df["timestamp"]))
-        .withColumn('hour', hour(spark_df["timestamp"]))
+        .withColumn('hour', hour(spark_df["timestamp"]) + 1)
         .withColumn('full_name', concat(spark_df["firstName"], lit(" "), spark_df["lastName"]))
     )
+
+    spark_df = spark_df.withColumn('timestamp', spark_df['timestamp'].cast(StringType())) # Convert back to string
 
     spark_df = (spark_df
         .withColumnRenamed("lon", "longitude")

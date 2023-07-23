@@ -1,12 +1,13 @@
 #! /bin/bash
-echo "here"
 cd eventsim 
 
 # Get current time 
 current_time=$(date -u "+%Y-%m-%dT%H:%M:%S")
 
-# Calculate time from 30 minutes ago
-last_30_minutes=$(date -d '30 minutes ago' "+%Y-%m-%dT%H:%M:%S")
+echo -e "\nStarting publish event at $current_time UTC" 
+
+# Calculate time from 15 minutes ago
+last_30_minutes=$(date -d '15 minutes ago' "+%Y-%m-%dT%H:%M:%S")
 
 echo "Building docker image to generate events...."
 sudo docker build -t eventsim .
@@ -30,3 +31,5 @@ sudo docker run -itd \
         --continuous
 
 echo "producing events..."
+
+echo "done"

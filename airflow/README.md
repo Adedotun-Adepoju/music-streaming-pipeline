@@ -6,6 +6,7 @@ ssh vm-instance
 - Update the following variables in the .env file in the vm instance
 ```sh
     GCS_BUCKET = <BUCKET TO LOAD PARQUET FILES FROM>
+    extra__google_cloud_platform__key_path = <PATH TO SERVICE ACCOUNT JSON FILE>
 ```
 
 - Start the Airflow server
@@ -20,5 +21,7 @@ docker-compose -f docker-compose-airflow.yaml up -d
 Username: airflow
 password: airflow1
 ```
-This can be changed in the .env file by editing these variables `_AIRFLOW_WWW_USER_USERNAME` and `_AIRFLOW_WWW_USER_PASSWORD`
+The Username and Password can be changed in the .env file by editing these variables `_AIRFLOW_WWW_USER_USERNAME` and `_AIRFLOW_WWW_USER_PASSWORD`
+
+- 
 
