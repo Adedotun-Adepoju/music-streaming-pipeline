@@ -35,3 +35,4 @@ bash eventsim_cron.sh
 ```
 - This adds a CRON job to run the eventsim events producer every 15 minutes. You can modify the bash script to run at any period. The logs of the CRON job will be on the eventsim.log file.
 
+- With this, you can monitor the Apache Airflow DAG from the webserver and monitor the task to load the parquet files to BigQuery. The DAG is scheduled to run on the 30th minute of every hour and load all the parquet data from the previous hour to the Data Warehouse
