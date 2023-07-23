@@ -100,13 +100,7 @@ load_files = GCSToBigQueryOperator(
     dag=dag
 )
 
-task1 = BashOperator(
-    task_id="log_info",
-    bash_command='echo "done"',
-    dag=dag
-)
-
-list_files >> process_files >> load_files >> task1
+list_files >> process_files >> load_files
 
 
 
