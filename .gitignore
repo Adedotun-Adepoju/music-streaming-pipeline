@@ -19,3 +19,4 @@ Thumbs.db
 **google_credentials.json
 **logs/
 demo.py
+eventsim.log

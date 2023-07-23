@@ -5,7 +5,9 @@ ssh vm-instance
 ```
 - Update the following variables in the .env file in the vm instance
 ```sh
-    GCS_BUCKET = <BUCKET TO LOAD PARQUET FILES FROM>
+    GCS_BUCKET = < BUCKET TO LOAD PARQUET FILES FROM >
+    BIGQUERY_DATASET = < BIGQUERY DATASET NAME >
+    BIGQUERY_TABLE = < BIGQUERY TABLE NAME >
     extra__google_cloud_platform__key_path = <PATH TO SERVICE ACCOUNT JSON FILE>
 ```
 
@@ -23,5 +25,13 @@ password: airflow1
 ```
 The Username and Password can be changed in the .env file by editing these variables `_AIRFLOW_WWW_USER_USERNAME` and `_AIRFLOW_WWW_USER_PASSWORD`
 
-- 
+- Activate the DAG by toggling it on. This DAG will write the parquet files generated to a BigQuery table defined in the .env file. 
+
+- Apache Airflow will run on the 30th minute of every hour and will perform a load job to BigQuery for every parquet file in the bucket loaded within the last hour 
+
+- We will now define eventsim to produce streaming events on a periodic basis to the kafka topic so Spark can consume the streaming data.
+```sh
+bash eventsim_cron.sh
+```
+- This adds a CRON job to run the eventsim events producer every 15 minutes. You can modify the bash script to run at any period. The logs of the CRON job will be on the eventsim.log file.
 

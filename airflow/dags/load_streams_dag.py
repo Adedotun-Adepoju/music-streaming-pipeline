@@ -16,6 +16,8 @@ from datetime import datetime, timedelta
 import time 
 
 BUCKET = os.environ.get("GCS_BUCKET")
+DATASET = os.environ.get("BIGQUERY_DATASET")
+TABLE = os.environ.get("BIGQUERY_TABLE")
 PREFIX = 'files/'
 
 # function to define what is done to each file
@@ -77,7 +79,7 @@ load_files = GCSToBigQueryOperator(
     task_id = "gcs_to_big_query",
     bucket = BUCKET,
     source_objects=[f"{FILE_DIRECTORY}*.parquet"],
-    destination_project_dataset_table='streaming_events.listen_events',
+    destination_project_dataset_table=f"{ DATASET }.{ TABLE }",
     source_format='PARQUET',
     autodetect=True,
     schema_fields = [
