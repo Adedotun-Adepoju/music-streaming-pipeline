@@ -20,7 +20,7 @@ DATASET = os.environ.get("BIGQUERY_DATASET")
 TABLE = os.environ.get("BIGQUERY_TABLE")
 PREFIX = 'files/'
 
-# function to define what is done to each file
+# function to define what is done to each file.
 def process_file(**context):
     file_names = context['ti'].xcom_pull(task_ids='list_files')
     logging.info(file_names)
@@ -46,7 +46,6 @@ dag = DAG(
 
 # Airflow uses UTC. One hour behind WAT
 current_time = datetime.now()
-# one_hour_ago = current_time - timedelta(hours=1) 
 
 year = current_time.strftime('%Y')
 month = current_time.strftime('%h')
