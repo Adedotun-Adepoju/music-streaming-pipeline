@@ -39,3 +39,4 @@
 - Set up Kafka instance on VM and publish messages to kafka topics [Kafka setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/kafka/README.md)
 - Set up Spark Dataproc cluster to consume messges from Kafka topics [Spark setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/spark/README.md)
 - Orchestrate workflow with Apache Airflow and CRON jobs [Airflow setup](https://github.com/Adedotun-Adepoju/music-streaming-pipeline/blob/main/airflow/README.md)
+- You can view the Dashboard that has been setup to monitor some metrics [dashboard](https://lookerstudio.google.com/reporting/588256e3-81f3-4fe3-9241-e4ee8e350326/page/MYsVD)
