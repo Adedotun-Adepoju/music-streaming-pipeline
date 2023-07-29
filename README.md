@@ -26,7 +26,7 @@
 
 ## Dashboard
 <p align="left">
-    <img alt="pipeline architecture" src="./assets/streams-dashboard.png">
+    <img alt="pipeline architecture" src="./assets/tableau-dashboard.png">
 </p>
 
 ## Setup
