@@ -91,7 +91,7 @@ load_files = GCSToBigQueryOperator(
     task_id = "gcs_to_big_query",
     bucket = BUCKET,
     source_objects=['{{ ti.xcom_pull(task_ids="set_file_directory", key="source_object_param") }}'],
-    destination_project_dataset_table='streaming_events.listen_events',
+    destination_project_dataset_table=f"{ DATASET }.{ TABLE }",
     source_format='PARQUET',
     autodetect=True,
     schema_fields = [
