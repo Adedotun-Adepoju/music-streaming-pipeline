@@ -25,6 +25,24 @@ def process_file(**context):
     file_names = context['ti'].xcom_pull(task_ids='list_files')
     logging.info(file_names)
 
+def set_file_directory(**kwargs):
+    execution_time = kwargs['execution_date']
+    print("time", execution_time)
+
+    year = execution_time.strftime('%Y')
+    month = execution_time.strftime('%h')
+    day = int(execution_time.strftime('%d'))
+    hour = int(execution_time.strftime('%H')) # Check for the previous hour. Remember this is UTC and VM generates WAT
+
+    # GCS directory to check for files
+    FILE_DIRECTORY = f"files/listen_events/load_year={ year }/load_month={ month }/load_day={ day }/load_hour={ hour }/"
+    SOURCE_OBJECT_PARAM = f"{FILE_DIRECTORY}*.parquet"
+
+    print("directory", FILE_DIRECTORY)
+
+    kwargs['ti'].xcom_push(key='file_directory', value=FILE_DIRECTORY)
+    kwargs['ti'].xcom_push(key='source_object_param', value=SOURCE_OBJECT_PARAM)
+
 default_args = {
     'owner': 'Adedotun Adepoju',
     'start_date': days_ago(0),
@@ -42,24 +60,20 @@ dag = DAG(
     catchup=False,
 )
 
-# GCS directory to check for files
-
-# Airflow uses UTC. One hour behind WAT
-current_time = datetime.now()
-
-year = current_time.strftime('%Y')
-month = current_time.strftime('%h')
-day = int(current_time.strftime('%d'))
-hour = int(current_time.strftime('%H')) # Check for the previous hour. Remember this is UTC and VM generates WAT
-
-FILE_DIRECTORY = f"files/listen_events/load_year={ year }/load_month={ month }/load_day={ day }/load_hour={ hour }/"
 # Define the tasks 
+
+# Task to get the file directoru file
+set_file_directory = PythonOperator(
+    task_id="set_file_directory",
+    python_callable=set_file_directory,
+    dag=dag
+)
 
 # List all files in the GCS directory
 list_files = GoogleCloudStorageListOperator(
     task_id='list_files',
     bucket= BUCKET,
-    prefix= FILE_DIRECTORY,
+    prefix= '{{ ti.xcom_pull(task_ids="set_file_directory", key="file_directory") }}',
     delimiter='.parquet',
     dag=dag
 )
@@ -76,8 +90,8 @@ process_files = PythonOperator(
 load_files = GCSToBigQueryOperator(
     task_id = "gcs_to_big_query",
     bucket = BUCKET,
-    source_objects=[f"{FILE_DIRECTORY}*.parquet"],
-    destination_project_dataset_table=f"{ DATASET }.{ TABLE }",
+    source_objects=['{{ ti.xcom_pull(task_ids="set_file_directory", key="source_object_param") }}'],
+    destination_project_dataset_table='streaming_events.listen_events',
     source_format='PARQUET',
     autodetect=True,
     schema_fields = [
@@ -100,7 +114,7 @@ load_files = GCSToBigQueryOperator(
     dag=dag
 )
 
-list_files >> process_files >> load_files
+set_file_directory >> list_files >> process_files >> load_files
 
 
 
